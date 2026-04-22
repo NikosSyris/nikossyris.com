@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --js --tailwind --app --no-src-dir --eslint --no-turbopack --import-alias \"@/*\" --yes)",
+      "Bash(rm \"c:/Users/SyrisNikolaos/intellij-workspace/blog/frontend/.env.example\")",
+      "Bash(rm -rf \"c:/Users/SyrisNikolaos/intellij-workspace/blog/frontend/app\")",
+      "Bash(rm -rf \"c:/Users/SyrisNikolaos/intellij-workspace/blog/frontend/components\")",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(curl -s http://localhost:3000/posts/hello-world)"
+    ]
+  }
+}
