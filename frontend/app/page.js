@@ -24,13 +24,13 @@ export default function HomePage() {
           <li key={post.slug} className="py-8 first:pt-0">
             <article>
               <time
-                className="text-base text-[var(--muted)]"
+                className="text-base md:text-xl text-[var(--muted)]"
                 dateTime={post.date}
               >
                 {formatDate(post.date)}
               </time>
 
-              <h2 className="mt-1 text-2xl font-bold leading-snug">
+              <h2 className="mt-1 text-2xl md:text-4xl font-bold leading-snug">
                 <Link
                   href={`/posts/${post.slug}`}
                   className="hover:opacity-70 transition-opacity"
@@ -41,7 +41,7 @@ export default function HomePage() {
               <div className="w-5 h-0.5 bg-[var(--foreground)] mt-1.5 opacity-80" />
 
               {post.excerpt && (
-                <p className="mt-3 text-base leading-relaxed text-[var(--muted)]">
+                <p className="mt-3 text-base md:text-xl leading-relaxed text-[var(--muted)]">
                   {post.excerpt}
                 </p>
               )}

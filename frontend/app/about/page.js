@@ -24,12 +24,12 @@ export default function AboutPage() {
       <h2>Get in touch</h2>
       <ul>
         <li>
-          <a href="https://github.com/your-username" target="_blank" rel="noopener noreferrer">
+          <a href="https://github.com/NikosSyris" target="_blank" rel="noopener noreferrer">
             GitHub
           </a>
         </li>
         <li>
-          <a href="https://linkedin.com/in/your-username" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.linkedin.com/in/nikossyris" target="_blank" rel="noopener noreferrer">
             LinkedIn
           </a>
         </li>

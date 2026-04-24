@@ -57,14 +57,14 @@ export default async function PostPage({ params }) {
     <article>
       <header className="mb-10">
         <time
-          className="text-base text-[var(--muted)]"
+          className="text-base md:text-xl text-[var(--muted)]"
           dateTime={post.date}
         >
           {formatDate(post.date)}
         </time>
-        <h1 className="mt-2 text-4xl font-bold leading-tight">{post.title}</h1>
+        <h1 className="mt-2 text-4xl md:text-6xl font-bold leading-tight">{post.title}</h1>
         {post.excerpt && (
-          <p className="mt-3 text-lg text-[var(--muted)] leading-relaxed">{post.excerpt}</p>
+          <p className="mt-3 text-lg md:text-xl text-[var(--muted)] leading-relaxed">{post.excerpt}</p>
         )}
       </header>
 

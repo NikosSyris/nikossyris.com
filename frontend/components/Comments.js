@@ -1,8 +1,22 @@
 "use client";
 
 import Giscus from "@giscus/react";
+import { useEffect, useState } from "react";
 
 export default function Comments() {
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    const update = () =>
+      setTheme(document.documentElement.classList.contains("dark") ? "dark" : "light");
+
+    update();
+
+    const observer = new MutationObserver(update);
+    observer.observe(document.documentElement, { attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <Giscus
       repo={process.env.NEXT_PUBLIC_GISCUS_REPO}
@@ -14,7 +28,7 @@ export default function Comments() {
       reactionsEnabled="1"
       emitMetadata="0"
       inputPosition="bottom"
-      theme="light"
+      theme={theme}
       lang="en"
     />
   );
