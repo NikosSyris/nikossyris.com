@@ -56,10 +56,16 @@ export default async function PostPage({ params }) {
   return (
     <article>
       <header className="mb-10">
-        <h1 className="text-3xl font-bold mb-3">{post.title}</h1>
-        <time className="text-sm text-zinc-500" dateTime={post.date}>
+        <time
+          className="text-base text-[var(--muted)]"
+          dateTime={post.date}
+        >
           {formatDate(post.date)}
         </time>
+        <h1 className="mt-2 text-4xl font-bold leading-tight">{post.title}</h1>
+        {post.excerpt && (
+          <p className="mt-3 text-lg text-[var(--muted)] leading-relaxed">{post.excerpt}</p>
+        )}
       </header>
 
       {post.coverUrl && (
@@ -74,11 +80,11 @@ export default async function PostPage({ params }) {
         </div>
       )}
 
-      <div className="prose prose-zinc max-w-none">
+      <div className="prose prose-zinc dark:prose-invert max-w-none">
         <ReactMarkdown>{post.content}</ReactMarkdown>
       </div>
 
-      <div className="mt-16 pt-8 border-t border-zinc-200">
+      <div className="mt-16 pt-8 border-t border-[var(--border)]">
         <Comments />
       </div>
     </article>

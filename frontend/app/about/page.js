@@ -5,7 +5,7 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <article className="prose prose-zinc max-w-none">
+    <article className="prose prose-zinc dark:prose-invert max-w-none">
       <h1>About</h1>
 
       <p>

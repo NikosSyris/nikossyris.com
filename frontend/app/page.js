@@ -15,31 +15,33 @@ export default function HomePage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-10">Posts</h1>
-
       {posts.length === 0 && (
-        <p className="text-zinc-500">No posts yet.</p>
+        <p className="text-[var(--muted)]">No posts yet.</p>
       )}
 
-      <ul className="flex flex-col gap-10">
+      <ul className="flex flex-col divide-y divide-[var(--border)]">
         {posts.map((post) => (
-          <li key={post.slug}>
+          <li key={post.slug} className="py-8 first:pt-0">
             <article>
-              <time className="text-sm text-zinc-500" dateTime={post.date}>
+              <time
+                className="text-base text-[var(--muted)]"
+                dateTime={post.date}
+              >
                 {formatDate(post.date)}
               </time>
 
-              <h2 className="mt-1 text-xl font-semibold">
+              <h2 className="mt-1 text-2xl font-bold leading-snug">
                 <Link
                   href={`/posts/${post.slug}`}
-                  className="hover:text-zinc-600 transition-colors"
+                  className="hover:opacity-70 transition-opacity"
                 >
                   {post.title}
                 </Link>
               </h2>
+              <div className="w-5 h-0.5 bg-[var(--foreground)] mt-1.5 opacity-80" />
 
               {post.excerpt && (
-                <p className="mt-2 text-zinc-600 leading-relaxed">
+                <p className="mt-3 text-base leading-relaxed text-[var(--muted)]">
                   {post.excerpt}
                 </p>
               )}
