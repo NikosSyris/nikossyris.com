@@ -50,6 +50,7 @@ export default function RootLayout({ children }) {
                 <Link href="/about" className="hover:text-[var(--foreground)] transition-colors">
                   About
                 </Link>
+                <ThemeToggle />
               </nav>
             </div>
 
@@ -65,7 +66,6 @@ export default function RootLayout({ children }) {
             </div>
           </footer>
 
-          <ThemeToggle />
         </Providers>
         <Analytics />
       </body>

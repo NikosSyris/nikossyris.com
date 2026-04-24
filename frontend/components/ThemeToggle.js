@@ -11,7 +11,7 @@ export default function ThemeToggle() {
     <button
       onClick={toggle}
       aria-label="Toggle theme"
-      className="fixed right-6 top-24 text-2xl leading-none text-[var(--muted)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
+      className="p-1 text-2xl leading-none text-[var(--muted)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
     >
       ◐
     </button>
