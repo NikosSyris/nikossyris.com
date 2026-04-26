@@ -1,8 +1,10 @@
-import ReactMarkdown from "react-markdown";
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
+import { markdownToHtml } from "@/lib/markdown";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Comments from "@/components/Comments";
+import ShareButtons from "@/components/ShareButtons";
+import CopyCodeButtons from "@/components/CopyCodeButtons";
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -53,6 +55,8 @@ export default async function PostPage({ params }) {
     notFound();
   }
 
+  const contentHtml = await markdownToHtml(post.content);
+
   return (
     <article>
       <header className="mb-10">
@@ -80,11 +84,20 @@ export default async function PostPage({ params }) {
         </div>
       )}
 
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <ReactMarkdown>{post.content}</ReactMarkdown>
-      </div>
+      <div
+        className="prose prose-zinc dark:prose-invert max-w-none"
+        dangerouslySetInnerHTML={{ __html: contentHtml }}
+      />
+      <CopyCodeButtons />
 
       <div className="mt-16 pt-8 border-t border-[var(--border)]">
+        <ShareButtons
+          title={post.title}
+          url={`${process.env.NEXT_PUBLIC_SITE_URL}/posts/${slug}`}
+        />
+      </div>
+
+      <div className="mt-12 pt-8 border-t border-[var(--border)]">
         <Comments />
       </div>
     </article>

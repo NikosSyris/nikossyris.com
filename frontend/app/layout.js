@@ -32,6 +32,7 @@ export default function RootLayout({ children }) {
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: `(function(){var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme:dark)').matches)){document.documentElement.classList.add('dark')}})()` }} />
+        <style dangerouslySetInnerHTML={{ __html: `html{background:#f5f5f4}html.dark{background:#111111}` }} />
       </head>
       <body className="min-h-screen flex flex-col bg-[var(--background)] text-[var(--foreground)] antialiased">
         <Providers>

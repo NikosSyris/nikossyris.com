@@ -14,3 +14,24 @@ Posts about JavaScript, Java, system design, and whatever else I find interestin
 ## Why a blog?
 
 Writing forces clarity. If I can't explain something simply, I don't understand it well enough yet.
+
+## A quick example
+
+```java
+public class Greeter {
+    private final String name;
+
+    public Greeter(String name) {
+        this.name = name;
+    }
+
+    public String greet() {
+        return "Hello, " + name + "!";
+    }
+
+    public static void main(String[] args) {
+        Greeter greeter = new Greeter("world");
+        System.out.println(greeter.greet());
+    }
+}
+```

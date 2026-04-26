@@ -4,7 +4,7 @@
 @variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
+  --background: #f5f5f4;
   --foreground: #111111;
   --muted: #6b7280;
   --border: #e5e7eb;
@@ -27,4 +27,42 @@
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+/* Syntax highlighting */
+[data-rehype-pretty-code-figure] pre {
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+
+/* Copy button on code blocks */
+.copy-btn {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  font-family: var(--font-geist-sans);
+}
+
+.copy-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Prevent Tailwind Typography from adding backtick quotes around code in pre */
+.prose pre code::before,
+.prose pre code::after {
+  content: none;
+}
+
+.prose pre {
+  padding: 0;
+  background-color: transparent;
 }
