@@ -21,16 +21,12 @@ export default function AboutPage() {
       </div>
 
       <p>
-        Hi, I&apos;m Nikos — a software developer based in Greece. I write
-        about things I learn, projects I work on, and topics I find worth
-        thinking through.
-      </p>
-
-      <h2>About this blog</h2>
-      <p>
-        This is my personal space for writing about software development. Posts
-        are mostly about backend development, system design, and whatever else
-        catches my attention.
+        Hi, I&apos;m Nikos, a software developer from Greece, mostly focused
+        on backend development and infrastructure. I&apos;ve always enjoyed
+        reading about new concepts and experimenting with them, but writing
+        about something forces you to actually understand it. That&apos;s the
+        main reason this blog exists and if it turns out to be useful to someone
+        else, even better.
       </p>
 
       <h2>Get in touch</h2>
