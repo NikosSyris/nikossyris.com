@@ -66,3 +66,12 @@ body {
   padding: 0;
   background-color: transparent;
 }
+
+[data-rehype-pretty-code-figure] code {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+[data-rehype-pretty-code-figure] [data-line] {
+  padding: 0 1.25rem;
+}
