@@ -85,7 +85,7 @@ export default async function PostPage({ params }) {
       )}
 
       <div
-        className="prose prose-zinc dark:prose-invert max-w-none"
+        className="prose prose-zinc dark:prose-invert md:prose-lg max-w-none"
         dangerouslySetInnerHTML={{ __html: contentHtml }}
       />
       <CopyCodeButtons />
