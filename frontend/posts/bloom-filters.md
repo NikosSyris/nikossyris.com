@@ -10,7 +10,7 @@ Bloom filters keep coming up a lot recently, but I haven't seen an article about
 
 Instead of writing our own filter, a battle-tested implementation like the one from the **Guava** library is the wiser choice.
 
-Before we do that though, I will explain why the matter and then I'll cover the essentials below.
+Before we do that though, I will explain why they matter and then cover the essentials below.
 
 ## Use case
 
@@ -40,7 +40,7 @@ At its core, a bloom filter is just a **bit array** (all zeros initially) plus *
 
 As a user, you decide on the **number of insertions** and the **false positive rate**, and then the **bit array size** and **number of hash functions** are calculated from those.
 
-The bit array size increases linearly with the number of insertions — double the elements, double the array size.
+The bit array size increases linearly with the number of insertions: double the elements, double the array size.
 
 | Insertions | False positive rate | Bit array size |                       |
 |------------|---------------------|----------------|-----------------------|
@@ -62,6 +62,8 @@ When you delete a user from the DB, the bits they set stay `1`, because other us
 
 The bloom filter keeps saying "maybe exists" for a deleted user, causing a DB query that returns nothing. This is a **false positive**, harmless correctness-wise (the DB returns empty), but wasteful since it defeats its purpose of *not* hitting the DB. The filter has become *stale*.
 
+There are two ways to handle this:
+
 ### Option 1: Counting Bloom Filter
 
 Instead of a bit array we use a **counter array**. Each position increments on `add` and decrements on `remove`. A slot is "set" if its count is greater than 0.
@@ -78,7 +80,7 @@ The tradeoff is that rebuilding is costly, so it should be done with caution.
 
 ### Example
 
-I'll walk through an example that's as close to production as possible, with some recommendations at the end.
+I'll walk through an example that's as close to production as possible, with some extras at the end.
 
 I'll split the code into four classes: a simulated database, a bloom filter service, a signup service, and a demo. Let's walk through each one.
 
@@ -169,7 +171,7 @@ class BloomFilterService {
 
 `BloomFilterService` builds on Guava's bloom filter implementation with a few essential additions.
 
-An `AtomicReference` wraps the filter to guarantee that after **Thread A** updates the filter, **Thread B** always sees the new value. Moreover, the filter is always fully rebuilt in a local variable first, then reassigned to `filterRef` — so no thread ever queries a half-built filter.
+An `AtomicReference` wraps the filter to guarantee that after **Thread A** updates the filter, **Thread B** always sees the new value. Moreover, the filter is always fully rebuilt in a local variable first, then reassigned to `filterRef` so no thread ever queries a half-built filter.
 
 On every deletion, if the threshold is reached, the filter is rebuilt.
 
@@ -178,7 +180,7 @@ The filter also rebuilds periodically via a scheduler (not shown here, but strai
 
 ### 3. The Signup Service
 
-This is the service that uses our bloom filter:
+This is the service that uses the bloom filter service:
 
 ```java
 class SignupService {
@@ -245,7 +247,7 @@ class SignupService {
 }
 ```
 
-`bloomBlocked` is the opposite of `queryCount` — it tracks how many times the filter saved a DB hit. `signup()` uses the filter to skip the DB check when registering a new user. `registerUser()` inserts the email into both the DB and the filter. `deleteUser()` deletes from the DB and then calls `onDelete()` to check whether the filter should be rebuilt.
+`bloomBlocked` is the opposite of `queryCount`. It tracks how many times the filter saved a DB hit. `signup()` uses the filter to skip the DB check when registering a new user. `registerUser()` inserts the email into both the DB and the filter. `deleteUser()` deletes from the DB and then calls `onDelete()` to check whether the filter should be rebuilt.
 
 ### 4. The Demo
 
@@ -283,7 +285,7 @@ Then some new users try to sign up:
         service.resetStats();
 ```
 
-As expected, Zara, Xander, and Mallory were blocked by the filter — no DB hit needed.
+As expected, Zara, Xander, and Mallory were blocked by the filter and no DB hit was needed.
 
 ```bash
      Total checks      : 6
@@ -361,9 +363,9 @@ The lifecycle would be as follows:
 
 1. On first deploy, the filter is built from the DB and saved to Redis.
 2. On subsequent restarts, the filter is loaded from Redis instead of being rebuilt.
-3. After each rebuild — whether from the scheduler or the deletion threshold — the Redis copy is updated too.
+3. After each rebuild, either from the scheduler or the deletion threshold, the Redis copy is updated too.
 
-You can also start with an empty filter and add elements as they're naturally accessed. During the warm-up period you get more DB hits than usual, but the filter fills itself organically — zero startup cost and no dependency on external services.
+You can also start with an empty filter and add elements as they're naturally accessed. During the warm-up period you get more DB hits than usual, but the filter fills itself over time with zero startup cost and no dependency on external services.
 
 #### 2. The expected insertions size would need a strategy
 
