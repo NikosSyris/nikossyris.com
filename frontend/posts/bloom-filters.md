@@ -324,15 +324,15 @@ The DB is still hit for Alice, Bob, and Carol even though they were deleted:
 Finally, we rebuild the filter and redo the same checks:
 
 ```java
-bloom.scheduledRebuild();
+        bloom.scheduledRebuild();
 
-service.checkAvailability("alice@example.com");   // deleted + rebuilt → filter blocks
-service.checkAvailability("bob@example.com");     // deleted + rebuilt → filter blocks
-service.checkAvailability("carol@example.com");   // deleted + rebuilt → filter blocks
-service.checkAvailability("ghost@example.com");   // never existed → still blocked
-service.checkAvailability("dave@example.com");    // still exists → DB confirms
-service.checkAvailability("zara@example.com");    // signed up in phase 2 → DB confirms
-service.printStats("after rebuild — deleted emails no longer leak to DB");
+        service.checkAvailability("alice@example.com");   // deleted + rebuilt → filter blocks
+        service.checkAvailability("bob@example.com");     // deleted + rebuilt → filter blocks
+        service.checkAvailability("carol@example.com");   // deleted + rebuilt → filter blocks
+        service.checkAvailability("ghost@example.com");   // never existed → still blocked
+        service.checkAvailability("dave@example.com");    // still exists → DB confirms
+        service.checkAvailability("zara@example.com");    // signed up in phase 2 → DB confirms
+        service.printStats("after rebuild — deleted emails no longer leak to DB");
 ```
 
 The filter is now consistent with the DB again:
@@ -373,3 +373,7 @@ In the example, the insertion size is hardcoded to `1_000_000`. In production th
 
 - Monitor current element count and trigger a rebuild + resize when you approach the limit
 - Round up to the next order of magnitude (`1M`, `10M`, etc.) and accept the memory overhead
+
+---
+
+The full code for this example is available on [GitHub](https://github.com/NikosSyris/BloomFilters).
