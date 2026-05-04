@@ -1,7 +1,7 @@
 ---
 title: Bloom Filters in Production with Java and Guava
 date: 2026-05-02
-excerpt: A practical walkthrough of bloom filters in Java. What they are, how to size them, and how to build a thread-safe production service with Guava.
+excerpt: A practical walkthrough of bloom filters in Java. What they are, how to size them and how to build a thread-safe production service with Guava.
 tags: [java]
 ---
 
@@ -15,6 +15,8 @@ Before we do that though, I will explain why they matter and then cover the esse
 ## Use case
 
 Imagine a DB table holding millions of emails and many users trying to concurrently register. You'd have to query the table on every single request just to check if an email is taken. Under heavy traffic, your DB takes a hit on every single registration attempt. A bloom filter sits in front of the DB: for any email that definitely doesn't exist, it returns immediately without a DB hit. Only when the filter says "maybe", you go to the DB to confirm.
+
+Another example is a social media platform serving hundreds of millions of users a personalized feed. For every feed refresh, the recommendation engine generates thousands of candidate posts to consider showing you. Without filtering, you'd constantly see posts you've already scrolled past, so the system needs to check each candidate against your entire viewing history. Querying a database for every candidate post, for every user, on every feed refresh would be a very costly operation. A Bloom filter sits in front of that database: for any post that definitely hasn't been seen, it passes through immediately as a candidate without a DB hit. Only when the filter says "maybe seen" does the system either go to the DB to confirm or simply skip that post altogether, since the occasional false positive just means the user missing a post they haven't seen yet, which is an acceptable trade-off.
 
 That's when bloom filters shine.
 
@@ -82,7 +84,7 @@ The tradeoff is that rebuilding is costly, so it should be done with caution.
 
 I'll walk through an example that's as close to production as possible, with some extras at the end.
 
-I'll split the code into four classes: a simulated database, a bloom filter service, a signup service, and a demo. Let's walk through each one.
+I'll split the code into four classes: a simulated database, a bloom filter service, a signup service and a demo. Let's walk through each one.
 
 ### 1. The Database
 
@@ -285,7 +287,7 @@ Then some new users try to sign up:
         service.resetStats();
 ```
 
-As expected, Zara, Xander, and Mallory were blocked by the filter and no DB hit was needed.
+As expected, Zara, Xander and Mallory were blocked by the filter and no DB hit was needed.
 
 ```bash
      Total checks      : 6
@@ -310,7 +312,7 @@ Now three users are deleted, but the filter doesn't know that yet:
         service.resetStats();
 ```
 
-The DB is still hit for Alice, Bob, and Carol even though they were deleted:
+The DB is still hit for Alice, Bob and Carol even though they were deleted:
 
 ```bash
   ✔  alice@example.com    → AVAILABLE  (DB hit — stale filter)
@@ -369,7 +371,7 @@ You can also start with an empty filter and add elements as they're naturally ac
 
 #### 2. The expected insertions size would need a strategy
 
-In the example, the insertion size is hardcoded to `1_000_000`. In production that number grows, and exceeding it degrades the false positive rate. Common strategies:
+In the example, the insertion size is hardcoded to `1_000_000`. In production that number grows and exceeding it degrades the false positive rate. Common strategies:
 
 - Monitor current element count and trigger a rebuild + resize when you approach the limit
 - Round up to the next order of magnitude (`1M`, `10M`, etc.) and accept the memory overhead
