@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllPosts } from "@/lib/posts";
+import NewsletterForm from "@/components/NewsletterForm";
 
 function formatDate(dateStr) {
   return new Date(dateStr).toLocaleDateString("en-US", {
@@ -49,6 +50,10 @@ export default function HomePage() {
           </li>
         ))}
       </ul>
+
+      <div className="mt-12 pt-8 border-t border-[var(--border)]">
+        <NewsletterForm />
+      </div>
     </div>
   );
 }
